@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Заявка на турнир по баскетболу</title>
+    <title>Регистрация на мероприятие</title>
     <style>
+        /* Стили остаются такими же, как в предыдущем примере */
         * {
             margin: 0;
             padding: 0;
@@ -43,13 +44,14 @@
 
         .modal {
             background-color: white;
-            border-radius: 12px;
-            width: 400px;
-            max-width: 90%;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 95%;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             transform: translateY(20px);
             transition: transform 0.3s ease;
             position: relative;
+            padding: 0;
         }
 
         .modal-overlay.active .modal {
@@ -59,79 +61,34 @@
         .modal-header {
             padding: 20px;
             border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #1e50a2;
-            color: white;
-            border-radius: 12px 12px 0 0;
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
+            color: #333;
         }
 
         .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
-            color: white;
+            color: #999;
             transition: color 0.2s;
         }
 
         .close-btn:hover {
-            color: #ddd;
+            color: #333;
         }
 
         .modal-body {
             padding: 20px;
         }
 
-        .modal-text {
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background-color: #1e50a2;
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #163b7a;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #ddd;
-            color: #555;
-            margin-right: 10px;
-        }
-
-        .btn-outline:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* Стили для формы */
         .form-group {
             margin-bottom: 20px;
         }
@@ -139,31 +96,110 @@
         .form-label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: #333;
             font-weight: 500;
         }
 
-        .form-input {
+        .form-label.required:after {
+            content: " *";
+            color: red;
+        }
+
+        .form-input, .form-select {
             width: 100%;
-            padding: 10px;
+            padding: 10px 12px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 16px;
         }
 
-        /* Скрытые шаги */
-        .modal-step {
-            display: none;
+        .form-input:focus, .form-select:focus {
+            border-color: #4a76a8;
+            outline: none;
         }
 
-        .modal-step.active {
-            display: block;
+        .phone-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .phone-prefix {
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .phone-number {
+            flex-grow: 1;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .add-friend {
+            margin: 25px 0 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .add-friend-btn {
+            background: none;
+            border: none;
+            color: #4a76a8;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .add-friend-btn:before {
+            content: "+";
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #4a76a8;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a6690;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #555;
+        }
+
+        .btn-outline:hover {
+            background-color: #f5f5f5;
         }
 
         /* Кнопка для демонстрации */
         .demo-btn {
             padding: 12px 24px;
-            background-color: #1e50a2;
+            background-color: #4a76a8;
             color: white;
             border: none;
             border-radius: 6px;
@@ -173,245 +209,178 @@
         }
 
         .demo-btn:hover {
-            background-color: #163b7a;
-        }
-
-        .basketball-icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background-color: #f5a623;
-            border-radius: 50%;
-            margin-right: 8px;
-            vertical-align: middle;
+            background-color: #3a6690;
         }
     </style>
 </head>
 <body>
-    <button class="demo-btn" id="openModalBtn">
-        <span class="basketball-icon"></span> Подать заявку на турнир
-    </button>
+    <button class="demo-btn" id="openModalBtn">Открыть форму регистрации</button>
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
-            <!-- Шаг 1: Основное окно -->
-            <div class="modal-step active" id="step1">
-                <div class="modal-header">
-                    <h3 class="modal-title">Заявка на турнир по баскетболу</h3>
-                    <button class="close-btn" id="closeModalBtn">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p class="modal-text">Заполните форму для участия в турнире. Вам нужно будет указать ваше имя, возраст и название команды.</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline" id="cancelBtn">Отмена</button>
-                    <button class="btn btn-primary" id="confirmBtn">Начать заполнение</button>
-                </div>
+            <button class="close-btn" id="closeModalBtn">&times;</button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title">Заявка на регистрацию для мероприятия</h2>
             </div>
-
-            <!-- Шаг 2: Ввод имени -->
-            <div class="modal-step" id="step2">
-                <div class="modal-header">
-                    <h3 class="modal-title">Шаг 1: Ваше имя</h3>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="eventType" class="form-label required">Тип мероприятия</label>
+                    <select id="eventType" class="form-select">
+                        <option value="" disabled selected>Выберите вид мероприятия</option>
+                        <option value="conference">Конференция</option>
+                        <option value="seminar">Семинар</option>
+                        <option value="workshop">Мастер-класс</option>
+                        <option value="exhibition">Выставка</option>
+                    </select>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nameInput" class="form-label">Полное имя:</label>
-                        <input type="text" id="nameInput" class="form-input" placeholder="Иванов Иван Иванович">
+                
+                <div class="form-group">
+                    <label for="fullName" class="form-label required">ФИО</label>
+                    <input type="text" id="fullName" class="form-input" placeholder="Введите ФИО">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label required">Имейл</label>
+                    <input type="email" id="email" class="form-input" placeholder="Введите имейл">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Номер телефона</label>
+                    <div class="phone-input">
+                        <span class="phone-prefix">+7</span>
+                        <input type="tel" id="phone" class="form-input phone-number" placeholder="900 123 45 67" maxlength="14">
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline" id="backToStep1">Назад</button>
-                    <button class="btn btn-primary" id="nextToStep3">Далее</button>
+                
+                <div class="add-friend">
+                    <button class="add-friend-btn">Добавить друга</button>
                 </div>
-            </div>
-
-            <!-- Шаг 3: Ввод возраста -->
-            <div class="modal-step" id="step3">
-                <div class="modal-header">
-                    <h3 class="modal-title">Шаг 2: Ваш возраст</h3>
-                </div>
-                <div class="modal-body">
+                
+                <!-- Скрытые поля для друга -->
+                <div id="friendFields" style="display: none;">
                     <div class="form-group">
-                        <label for="ageInput" class="form-label">Возраст:</label>
-                        <input type="number" id="ageInput" class="form-input" placeholder="18" min="12" max="60">
-                    </div>
-                    <p class="modal-text">Турнир проводится для участников от 12 до 60 лет</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline" id="backToStep2">Назад</button>
-                    <button class="btn btn-primary" id="nextToStep4">Далее</button>
-                </div>
-            </div>
-
-            <!-- Шаг 4: Название команды -->
-            <div class="modal-step" id="step4">
-                <div class="modal-header">
-                    <h3 class="modal-title">Шаг 3: Название команды</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="teamInput" class="form-label">Название вашей команды:</label>
-                        <input type="text" id="teamInput" class="form-input" placeholder="Например: 'Летящие мячи'">
+                        <label for="contactMethod" class="form-label required">Предпочитаемый вид связи</label>
+                        <select id="contactMethod" class="form-select">
+                            <option value="" disabled selected>Выберите предпочитаемый вид связи</option>
+                            <option value="phone">Телефон</option>
+                            <option value="email">Email</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="telegram">Telegram</option>
+                        </select>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline" id="backToStep3">Назад</button>
-                    <button class="btn btn-primary" id="nextToStep5">Далее</button>
-                </div>
             </div>
-
-            <!-- Шаг 5: Подтверждение -->
-            <div class="modal-step" id="step5">
-                <div class="modal-header">
-                    <h3 class="modal-title">Заявка принята!</h3>
-                </div>
-                <div class="modal-body">
-                    <p class="modal-text" id="resultText"></p>
-                    <p class="modal-text">Организаторы свяжутся с вами в ближайшее время для подтверждения участия.</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="closeAfterComplete">Закрыть</button>
-                </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="backBtn">Назад</button>
+                <button class="btn btn-primary" id="nextBtn">Дальше</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Элементы DOM
         const modalOverlay = document.getElementById('modalOverlay');
         const openModalBtn = document.getElementById('openModalBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
-        
-        // Кнопки шага 1
-        const cancelBtn = document.getElementById('cancelBtn');
-        const confirmBtn = document.getElementById('confirmBtn');
-        
-        // Кнопки шага 2
-        const backToStep1 = document.getElementById('backToStep1');
-        const nextToStep3 = document.getElementById('nextToStep3');
-        const nameInput = document.getElementById('nameInput');
-        
-        // Кнопки шага 3
-        const backToStep2 = document.getElementById('backToStep2');
-        const nextToStep4 = document.getElementById('nextToStep4');
-        const ageInput = document.getElementById('ageInput');
-        
-        // Кнопки шага 4
-        const backToStep3 = document.getElementById('backToStep3');
-        const nextToStep5 = document.getElementById('nextToStep5');
-        const teamInput = document.getElementById('teamInput');
-        
-        // Шаг 5
-        const resultText = document.getElementById('resultText');
-        const closeAfterComplete = document.getElementById('closeAfterComplete');
-        
-        // Все шаги
-        const steps = [
-            document.getElementById('step1'),
-            document.getElementById('step2'),
-            document.getElementById('step3'),
-            document.getElementById('step4'),
-            document.getElementById('step5')
-        ];
-        
-        // Текущий шаг
-        let currentStep = 0;
-        
-        // Показать конкретный шаг
-        function showStep(stepIndex) {
-            steps.forEach((step, index) => {
-                if (index === stepIndex) {
-                    step.classList.add('active');
-                } else {
-                    step.classList.remove('active');
-                }
-            });
-            currentStep = stepIndex;
-        }
-        
+        const addFriendBtn = document.querySelector('.add-friend-btn');
+        const friendFields = document.getElementById('friendFields');
+        const backBtn = document.getElementById('backBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const phoneInput = document.getElementById('phone');
+
         // Открытие модального окна
         openModalBtn.addEventListener('click', () => {
             modalOverlay.classList.add('active');
-            showStep(0); // Сбрасываем на первый шаг
-            nameInput.value = '';
-            ageInput.value = '';
-            teamInput.value = '';
         });
-        
+
         // Закрытие модального окна
-        function closeModal() {
+        closeModalBtn.addEventListener('click', () => {
             modalOverlay.classList.remove('active');
-        }
-        
-        closeModalBtn.addEventListener('click', closeModal);
+        });
+
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
-                closeModal();
+                modalOverlay.classList.remove('active');
             }
         });
-        
-        // Обработчики шага 1
-        cancelBtn.addEventListener('click', () => {
-            showStep(0); // Возвращаемся в начальное состояние
-        });
-        
-        confirmBtn.addEventListener('click', () => {
-            showStep(1); // Переходим к вводу имени
-        });
-        
-        // Обработчики шага 2
-        backToStep1.addEventListener('click', () => {
-            showStep(0); // Возвращаемся к первому шагу
-        });
-        
-        nextToStep3.addEventListener('click', () => {
-            if (nameInput.value.trim() === '') {
-                alert('Пожалуйста, введите ваше имя');
-                return;
+
+        // Добавление друга
+        addFriendBtn.addEventListener('click', () => {
+            if (friendFields.style.display === 'none') {
+                friendFields.style.display = 'block';
+                addFriendBtn.textContent = 'Убрать друга';
+            } else {
+                friendFields.style.display = 'none';
+                addFriendBtn.textContent = 'Добавить друга';
             }
-            showStep(2); // Переходим к вводу возраста
         });
-        
-        // Обработчики шага 3
-        backToStep2.addEventListener('click', () => {
-            showStep(1); // Возвращаемся к вводу имени
-        });
-        
-        nextToStep4.addEventListener('click', () => {
-            const age = parseInt(ageInput.value);
+
+        // Маска для телефона (10 цифр в формате XXX XXX XX XX)
+        phoneInput.addEventListener('input', function(e) {
+            // Удаляем все нецифровые символы
+            let numbers = e.target.value.replace(/\D/g, '');
             
-            if (isNaN(age) || ageInput.value.trim() === '') {
-                alert('Пожалуйста, введите ваш возраст');
-                return;
+            // Форматируем номер: XXX XXX XX XX
+            let formatted = '';
+            if (numbers.length > 0) {
+                formatted = numbers.substring(0, 3);
+                if (numbers.length > 3) {
+                    formatted += ' ' + numbers.substring(3, 6);
+                }
+                if (numbers.length > 6) {
+                    formatted += ' ' + numbers.substring(6, 8);
+                }
+                if (numbers.length > 8) {
+                    formatted += ' ' + numbers.substring(8, 10);
+                }
             }
             
-            if (age < 12 || age > 60) {
-                alert('Возраст должен быть от 12 до 60 лет');
-                return;
-            }
+            e.target.value = formatted;
+        });
+
+        // Валидация формы перед отправкой
+        nextBtn.addEventListener('click', () => {
+            const eventType = document.getElementById('eventType');
+            const fullName = document.getElementById('fullName');
+            const email = document.getElementById('email');
             
-            showStep(3); // Переходим к вводу команды
-        });
-        
-        // Обработчики шага 4
-        backToStep3.addEventListener('click', () => {
-            showStep(2); // Возвращаемся к вводу возраста
-        });
-        
-        nextToStep5.addEventListener('click', () => {
-            if (teamInput.value.trim() === '') {
-                alert('Пожалуйста, введите название команды');
+            if (eventType.value === '') {
+                alert('Пожалуйста, выберите тип мероприятия');
                 return;
             }
             
-            // Формируем итоговый текст
-            resultText.textContent = `Вы записаны на турнир: ${nameInput.value}, ${ageInput.value} лет, команда "${teamInput.value}"`;
-            showStep(4); // Переходим к результату
+            if (fullName.value.trim() === '') {
+                alert('Пожалуйста, введите ФИО');
+                return;
+            }
+            
+            if (email.value.trim() === '' || !email.value.includes('@')) {
+                alert('Пожалуйста, введите корректный email');
+                return;
+            }
+            
+            // Проверка телефона (должно быть 10 цифр без учета пробелов)
+            const phoneNumbers = phoneInput.value.replace(/\D/g, '');
+            if (phoneNumbers.length !== 10) {
+                alert('Пожалуйста, введите корректный номер телефона (10 цифр)');
+                return;
+            }
+            
+            // Если показаны поля друга, проверяем и их
+            if (friendFields.style.display === 'block') {
+                const contactMethod = document.getElementById('contactMethod');
+                if (contactMethod.value === '') {
+                    alert('Пожалуйста, выберите предпочитаемый вид связи для друга');
+                    return;
+                }
+            }
+            
+            // Здесь можно добавить отправку формы
+            alert('Форма успешно отправлена!\nНомер телефона: +7' + phoneNumbers);
+            modalOverlay.classList.remove('active');
         });
-        
-        // Обработчик шага 5
-        closeAfterComplete.addEventListener('click', closeModal);
     </script>
 </body>
 </html>
